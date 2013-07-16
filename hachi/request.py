@@ -93,12 +93,12 @@ class Tx64Request(XBeeRequest):
 
     @property
     def id_data(self):
-        api_data = bytearray()
-        api_data.append(self.frame_id)
-        api_data.extend(struct.pack('>Q', self.destination_address))
-        api_data.append(self.options)
-        api_data.extend(self.data)
-        return api_data
+        id_data = bytearray()
+        id_data.append(self.frame_id)
+        id_data.extend(struct.pack('>Q', self.destination_address))
+        id_data.append(self.options)
+        id_data.extend(self.data)
+        return id_data
 
 
 class Tx16Request(XBeeRequest):
@@ -124,12 +124,12 @@ class Tx16Request(XBeeRequest):
 
     @property
     def id_data(self):
-        api_data = bytearray()
-        api_data.append(self.frame_id)
-        api_data.extend(struct.pack('>H', self.destination_address))
-        api_data.append(self.options)
-        api_data.extend(self.data)
-        return api_data
+        id_data = bytearray()
+        id_data.append(self.frame_id)
+        id_data.extend(struct.pack('>H', self.destination_address))
+        id_data.append(self.options)
+        id_data.extend(self.data)
+        return id_data
 
 
 class AtRequest(XBeeRequest):
@@ -158,12 +158,12 @@ class AtRequest(XBeeRequest):
 
     @property
     def id_data(self):
-        api_data = bytearray()
-        api_data.append(self.frame_id)
-        api_data.extend(self.command)
+        id_data = bytearray()
+        id_data.append(self.frame_id)
+        id_data.extend(self.command)
         if self.parameter is not None:
-            api_data.extend(self.parameter)
-        return api_data
+            id_data.extend(self.parameter)
+        return id_data
 
 
 class AtQueueRequest(XBeeRequest):
@@ -192,12 +192,12 @@ class AtQueueRequest(XBeeRequest):
 
     @property
     def id_data(self):
-        api_data = bytearray()
-        api_data.append(self.frame_id)
-        api_data.extend(self.command)
+        id_data = bytearray()
+        id_data.append(self.frame_id)
+        id_data.extend(self.command)
         if self.parameter is not None:
-            api_data.extend(self.parameter)
-        return api_data
+            id_data.extend(self.parameter)
+        return id_data
 
 
 class ZBTxRequest(XBeeRequest):
@@ -232,14 +232,14 @@ class ZBTxRequest(XBeeRequest):
 
     @property
     def id_data(self):
-        api_data = bytearray()
-        api_data.append(self.frame_id)
-        api_data.extend(struct.pack('>Q', self.destination_address_64))
-        api_data.extend(struct.pack('>H', self.destination_address_16))
-        api_data.append(self.broadcast_radius)
-        api_data.append(self.options)
-        api_data.extend(self.data)
-        return api_data
+        id_data = bytearray()
+        id_data.append(self.frame_id)
+        id_data.extend(struct.pack('>Q', self.destination_address_64))
+        id_data.extend(struct.pack('>H', self.destination_address_16))
+        id_data.append(self.broadcast_radius)
+        id_data.append(self.options)
+        id_data.extend(self.data)
+        return id_data
 
 
 class ZBExplicitTxRequest(XBeeRequest):
@@ -285,18 +285,18 @@ class ZBExplicitTxRequest(XBeeRequest):
 
     @property
     def id_data(self):
-        api_data = bytearray()
-        api_data.append(self.frame_id)
-        api_data.extend(struct.pack('>Q', self.destination_address_64))
-        api_data.extend(struct.pack('>H', self.destination_address_16))
-        api_data.append(self.source_endpoint)
-        api_data.append(self.destination_endpoint)
-        api_data.extend(struct.pack('>H', self.cluster_id))
-        api_data.extend(struct.pack('>H', self.profile_id))
-        api_data.append(self.broadcast_radius)
-        api_data.append(self.options)
-        api_data.extend(self.data)
-        return api_data
+        id_data = bytearray()
+        id_data.append(self.frame_id)
+        id_data.extend(struct.pack('>Q', self.destination_address_64))
+        id_data.extend(struct.pack('>H', self.destination_address_16))
+        id_data.append(self.source_endpoint)
+        id_data.append(self.destination_endpoint)
+        id_data.extend(struct.pack('>H', self.cluster_id))
+        id_data.extend(struct.pack('>H', self.profile_id))
+        id_data.append(self.broadcast_radius)
+        id_data.append(self.options)
+        id_data.extend(self.data)
+        return id_data
 
 
 class RemoteAtRequest(XBeeRequest):
@@ -335,14 +335,14 @@ class RemoteAtRequest(XBeeRequest):
 
     @property
     def id_data(self):
-        api_data = bytearray()
-        api_data.append(self.frame_id)
-        api_data.extend(struct.pack('>Q', self.destination_address_64))
-        api_data.extend(struct.pack('>H', self.destination_address_16))
-        api_data.append(self.options)
-        api_data.extend(self.command)
+        id_data = bytearray()
+        id_data.append(self.frame_id)
+        id_data.extend(struct.pack('>Q', self.destination_address_64))
+        id_data.extend(struct.pack('>H', self.destination_address_16))
+        id_data.append(self.options)
+        id_data.extend(self.command)
         if self.parameter is not None:
-            api_data.extend(self.parameter)
-        return api_data
+            id_data.extend(self.parameter)
+        return id_data
 
 REQUEST_MAP = {c.api_id: c for c in (Tx64Request, Tx16Request, AtRequest, AtQueueRequest, ZBTxRequest, ZBExplicitTxRequest, RemoteAtRequest)}

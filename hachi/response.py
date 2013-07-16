@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from .const import (RX_64_RESPONSE, RX_16_RESPONSE, RX_64_IO_RESPONSE,
     RX_16_IO_RESPONSE, AT_RESPONSE, TX_STATUS_RESPONSE, MODEM_STATUS_RESPONSE,
     ZB_TX_STATUS_RESPONSE, ZB_RX_RESPONSE, ZB_EXPLICIT_RX_RESPONSE,
@@ -34,7 +35,7 @@ class XBeeResponse(object):
     @property
     def length(self):
         """Length, on 2 bytes starting right after the :data:`~hachi.const.FRAME_DELIMITER` of the :attr:`frame`"""
-        return struct.unpack('>H', self.frame[1:3])[0]
+        return struct.unpack(b'>H', self.frame[1:3])[0]
 
     @property
     def id_data(self):
@@ -77,7 +78,7 @@ class Rx64Response(XBeeResponse):
     @property
     def source_address(self):
         """Source address, first 8 bytes of the :attr:`~XBeeResponse.id_data`"""
-        return struct.unpack('>Q', self.id_data[0:8])[0]
+        return struct.unpack(b'>Q', self.id_data[0:8])[0]
 
     @property
     def rssi(self):
@@ -106,7 +107,7 @@ class Rx16Response(XBeeResponse):
     @property
     def source_address(self):
         """Source address, first 2 bytes of the :attr:`~XBeeResponse.id_data`"""
-        return struct.unpack('>H', self.id_data[0:2])[0]
+        return struct.unpack(b'>H', self.id_data[0:2])[0]
 
     @property
     def rssi(self):
@@ -135,7 +136,7 @@ class Rx64IoSampleResponse(XBeeResponse):
     @property
     def source_address(self):
         """Source address, first 8 bytes of the :attr:`~XBeeResponse.id_data`"""
-        return struct.unpack('>Q', self.id_data[0:8])[0]
+        return struct.unpack(b'>Q', self.id_data[0:8])[0]
 
     @property
     def rssi(self):
@@ -175,7 +176,7 @@ class Rx64IoSampleResponse(XBeeResponse):
         for D8
 
         """
-        return struct.unpack('>H', self.id_data[11:13])[0] & 0x01ff
+        return struct.unpack(b'>H', self.id_data[11:13])[0] & 0x01ff
 
     @property
     def contains_analog(self):
@@ -221,7 +222,7 @@ class Rx64IoSampleResponse(XBeeResponse):
         offset = index * 2
         if self.contains_analog:
             offset += index * 2 * bitcount(self.analog_mask)
-        sample = struct.unpack('>H', self.id_data[13 + offset:15 + offset])[0]
+        sample = struct.unpack(b'>H', self.id_data[13 + offset:15 + offset])[0]
         return (sample >> pin) & 1 == 1
 
     def get_analog(self, index, pin):
@@ -241,7 +242,7 @@ class Rx64IoSampleResponse(XBeeResponse):
         for i in range(pin):
             if self.is_analog_enabled(i):
                 offset += 2
-        return struct.unpack('>H', self.id_data[13 + offset:15 + offset])[0]
+        return struct.unpack(b'>H', self.id_data[13 + offset:15 + offset])[0]
 
 
 class Rx16IoSampleResponse(XBeeResponse):
@@ -255,7 +256,7 @@ class Rx16IoSampleResponse(XBeeResponse):
     @property
     def source_address(self):
         """Source address, first 2 bytes of the :attr:`~XBeeResponse.id_data`"""
-        return struct.unpack('>H', self.id_data[0:2])[0]
+        return struct.unpack(b'>H', self.id_data[0:2])[0]
 
     @property
     def rssi(self):
@@ -295,7 +296,7 @@ class Rx16IoSampleResponse(XBeeResponse):
         for D8
 
         """
-        return struct.unpack('>H', self.id_data[5:7])[0] & 0x01ff
+        return struct.unpack(b'>H', self.id_data[5:7])[0] & 0x01ff
 
     @property
     def contains_analog(self):
@@ -341,7 +342,7 @@ class Rx16IoSampleResponse(XBeeResponse):
         offset = index * 2
         if self.contains_analog:
             offset += index * 2 * bitcount(self.analog_mask)
-        sample = struct.unpack('>H', self.id_data[7 + offset:9 + offset])[0]
+        sample = struct.unpack(b'>H', self.id_data[7 + offset:9 + offset])[0]
         return (sample >> pin) & 1 == 1
 
     def get_analog(self, index, pin):
@@ -361,7 +362,7 @@ class Rx16IoSampleResponse(XBeeResponse):
         for i in range(pin):
             if self.is_analog_enabled(i):
                 offset += 2
-        return struct.unpack('>H', self.id_data[7 + offset:9 + offset])[0]
+        return struct.unpack(b'>H', self.id_data[7 + offset:9 + offset])[0]
 
 
 class AtResponse(XBeeResponse):
@@ -380,7 +381,7 @@ class AtResponse(XBeeResponse):
     @property
     def command(self):
         """Command, on 2 bytes immediately following the :attr:`frame_id`"""
-        return str(self.id_data[1:3])
+        return bytes(self.id_data[1:3])
 
     @property
     def status(self):
@@ -442,7 +443,7 @@ class ZBTxStatusResponse(XBeeResponse):
     @property
     def destination_address(self):
         """Destination address, on 2 bytes immediately following the :attr:`frame_id`"""
-        return struct.unpack('>H', self.id_data[1:3])[0]
+        return struct.unpack(b'>H', self.id_data[1:3])[0]
 
     @property
     def retry_count(self):
@@ -476,12 +477,12 @@ class ZBRxResponse(XBeeResponse):
     @property
     def source_address_64(self):
         """64-bits source address, on 8 bytes immediately following the :attr:`frame_id`"""
-        return struct.unpack('>Q', self.id_data[1:9])[0]
+        return struct.unpack(b'>Q', self.id_data[1:9])[0]
 
     @property
     def source_address_16(self):
         """16-bits source address, on 2 bytes immediately following the :attr:`source_address_64`"""
-        return struct.unpack('>H', self.id_data[9:11])[0]
+        return struct.unpack(b'>H', self.id_data[9:11])[0]
 
     @property
     def options(self):
@@ -505,12 +506,12 @@ class ZBExplicitRxResponse(XBeeResponse):
     @property
     def source_address_64(self):
         """64-bits source address, first 8 bytes of the :attr:`~XBeeResponse.id_data`"""
-        return struct.unpack('>Q', self.id_data[0:8])[0]
+        return struct.unpack(b'>Q', self.id_data[0:8])[0]
 
     @property
     def source_address_16(self):
         """16-bits source address, on 2 bytes immediately following the :attr:`source_address_64`"""
-        return struct.unpack('>H', self.id_data[8:10])[0]
+        return struct.unpack(b'>H', self.id_data[8:10])[0]
 
     @property
     def source_endpoint(self):
@@ -525,12 +526,12 @@ class ZBExplicitRxResponse(XBeeResponse):
     @property
     def cluster_id(self):
         """Cluster id, on 2 bytes immediately following the :attr:`destination_endpoint`"""
-        return struct.unpack('>H', self.id_data[12:14])[0]
+        return struct.unpack(b'>H', self.id_data[12:14])[0]
 
     @property
     def profile_id(self):
         """Profile id, on 2 bytes immediately following the :attr:`cluster_id`"""
-        return struct.unpack('>H', self.id_data[14:16])[0]
+        return struct.unpack(b'>H', self.id_data[14:16])[0]
 
     @property
     def options(self):
@@ -554,12 +555,12 @@ class ZBIoSampleResponse(XBeeResponse):
     @property
     def source_address_64(self):
         """64-bits source address, first 8 bytes of the :attr:`~XBeeResponse.id_data`"""
-        return struct.unpack('>Q', self.id_data[0:8])[0]
+        return struct.unpack(b'>Q', self.id_data[0:8])[0]
 
     @property
     def source_address_16(self):
         """16-bits source address, on 2 bytes immediately following the :attr:`source_address_64`"""
-        return struct.unpack('>H', self.id_data[8:10])[0]
+        return struct.unpack(b'>H', self.id_data[8:10])[0]
 
     @property
     def options(self):
@@ -574,7 +575,7 @@ class ZBIoSampleResponse(XBeeResponse):
     @property
     def digital_mask(self):
         """Digital mask, on 2 bytes, immediately following the :attr:`sample_count`"""
-        return struct.unpack('>H', self.id_data[12:14])[0] & 0x3cff
+        return struct.unpack(b'>H', self.id_data[12:14])[0] & 0x3cff
 
     @property
     def analog_mask(self):
@@ -621,7 +622,7 @@ class ZBIoSampleResponse(XBeeResponse):
         """
         if not self.is_digital_enabled(pin):
             raise ValueError('Digital pin %d is not enabled' % pin)
-        sample = struct.unpack('>H', self.id_data[15:17])[0]
+        sample = struct.unpack(b'>H', self.id_data[15:17])[0]
         return (sample >> pin) & 1 == 1
 
     def get_analog(self, pin):
@@ -640,7 +641,7 @@ class ZBIoSampleResponse(XBeeResponse):
         for i in range(pin):
             if self.is_analog_enabled(i):
                 offset += 2
-        return struct.unpack('>H', self.id_data[15 + offset:17 + offset])[0]
+        return struct.unpack(b'>H', self.id_data[15 + offset:17 + offset])[0]
 
 
 class RemoteAtResponse(XBeeResponse):
@@ -659,17 +660,17 @@ class RemoteAtResponse(XBeeResponse):
     @property
     def source_address_64(self):
         """64-bits source address, on 8 bytes immediately following the :attr:`frame_id`"""
-        return struct.unpack('>Q', self.id_data[1:9])[0]
+        return struct.unpack(b'>Q', self.id_data[1:9])[0]
 
     @property
     def source_address_16(self):
         """16-bits source address, on 2 bytes immediately following the :attr:`source_address_64`"""
-        return struct.unpack('>H', self.id_data[9:11])[0]
+        return struct.unpack(b'>H', self.id_data[9:11])[0]
 
     @property
     def command(self):
         """Command, on two bytes immediately following the :attr:`source_address_16`"""
-        return str(self.id_data[11:13])
+        return bytes(self.id_data[11:13])
 
     @property
     def status(self):

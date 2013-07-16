@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from .const import FRAME_DELIMITER, ESCAPE, XON, XOFF
 from .response import RESPONSE_MAP
 import logging
@@ -37,11 +38,11 @@ class XBee(object):
         :type data: int or bytes or bytearray
 
         """
-        if isinstance(data, bytes):
+        if isinstance(data, str):  # python 2
             for c in data:
                 self.feed(ord(c))
             return
-        if isinstance(data, bytearray):
+        if isinstance(data, (bytearray, bytes)):
             for b in data:
                 self.feed(b)
             return

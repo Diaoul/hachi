@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from hachi.const import (TRANSMIT_OPTION_BROADCAST_PACKET, ADDRESS_16_BROADCAST,
     TRANSMIT_OPTION_DISABLE_ACKNOWLEDGEMENT, ADDRESS_16_USE_64_BIT_ADDRESSING,
     BROADCAST_RADIUS_MAX_HOPS, TRANSMIT_OPTION_APPLY_CHANGES, ADDRESS_64_COORDINATOR,
@@ -57,7 +58,7 @@ class ResponseTestCase(unittest.TestCase):
         self.assertTrue(packet.length == 7)
         self.assertTrue(packet.api_id == 0x88)
         self.assertTrue(packet.frame_id == 0x52)
-        self.assertTrue(packet.command == 'MY')
+        self.assertTrue(packet.command == b'MY')
         self.assertTrue(packet.status == 0x00)
         self.assertTrue(packet.value[0] == 0x00)
         self.assertTrue(packet.value[1] == 0x00)
@@ -99,7 +100,7 @@ class ResponseTestCase(unittest.TestCase):
         self.assertTrue(packet.frame_id == 0x55)
         self.assertTrue(packet.source_address_64 == (0x00 << 8 * 7) + (0x13 << 8 * 6) + (0xa2 << 8 * 5) + (0x00 << 8 * 4) + (0x40 << 8 * 3) + (0x52 << 8 * 2) + (0x2b << 8) + 0xaa)
         self.assertTrue(packet.source_address_16 == (0x7d << 8) + 0x84)
-        self.assertTrue(packet.command == 'SL')
+        self.assertTrue(packet.command == b'SL')
         self.assertTrue(packet.status == 0x00)
         self.assertTrue(packet.data[0] == 0x40)
         self.assertTrue(packet.data[1] == 0x52)
@@ -329,21 +330,21 @@ class RequestTestCase(unittest.TestCase):
         self.assertTrue(request.checksum == 0x21)
 
     def test_AtRequest(self):
-        request = AtRequest('SP')
+        request = AtRequest(b'SP')
         self.assertTrue(request.frame == bytearray.fromhex('7E 00 04 08 01 53 50 53'))
         self.assertTrue(request.length == 4)
         self.assertTrue(request.checksum == 0x53)
-        request = AtRequest('SP', bytearray([0x07, 0xd0]))
+        request = AtRequest(b'SP', bytearray([0x07, 0xd0]))
         self.assertTrue(request.frame == bytearray.fromhex('7E 00 06 08 01 53 50 07 D0 7C'))
         self.assertTrue(request.length == 6)
         self.assertTrue(request.checksum == 0x7c)
 
     def test_AtQueueRequest(self):
-        request = AtQueueRequest('SP')
+        request = AtQueueRequest(b'SP')
         self.assertTrue(request.frame == bytearray.fromhex('7E 00 04 09 01 53 50 52'))
         self.assertTrue(request.length == 4)
         self.assertTrue(request.checksum == 0x52)
-        request = AtQueueRequest('SP', bytearray([0x07, 0xd0]))
+        request = AtQueueRequest(b'SP', bytearray([0x07, 0xd0]))
         self.assertTrue(request.frame == bytearray.fromhex('7E 00 06 09 01 53 50 07 D0 7B'))
         self.assertTrue(request.length == 6)
         self.assertTrue(request.checksum == 0x7b)
@@ -367,11 +368,11 @@ class RequestTestCase(unittest.TestCase):
         self.assertTrue(request.checksum == 0x3a)
 
     def test_RemoteAtRequest(self):
-        request = RemoteAtRequest('SP', 0x112233445566)
+        request = RemoteAtRequest(b'SP', 0x112233445566)
         self.assertTrue(request.frame == bytearray.fromhex('7E 00 0F 17 01 00 00 11 22 33 44 55 66 FF FE 02 53 50 E0'))
         self.assertTrue(request.length == 15)
         self.assertTrue(request.checksum == 0xe0)
-        request = RemoteAtRequest('BH', 0x0013a20040401122, bytearray([0x01]), ADDRESS_16_USE_64_BIT_ADDRESSING, TRANSMIT_OPTION_APPLY_CHANGES, 0x01)
+        request = RemoteAtRequest(b'BH', 0x0013a20040401122, bytearray([0x01]), ADDRESS_16_USE_64_BIT_ADDRESSING, TRANSMIT_OPTION_APPLY_CHANGES, 0x01)
         self.assertTrue(request.frame == bytearray.fromhex('7E 00 10 17 01 00 13 A2 00 40 40 11 22 FF FE 02 42 48 01 F5'))
         self.assertTrue(request.length == 16)
         self.assertTrue(request.checksum == 0xf5)

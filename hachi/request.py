@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from .const import (FRAME_DELIMITER, TRANSMIT_OPTION_APPLY_CHANGES, TX_64_REQUEST,
     TX_16_REQUEST, AT_REQUEST, AT_QUEUE_REQUEST, ZB_TX_REQUEST,
     ZB_EXPLICIT_TX_REQUEST, REMOTE_AT_REQUEST)
@@ -95,7 +96,7 @@ class Tx64Request(XBeeRequest):
     def id_data(self):
         id_data = bytearray()
         id_data.append(self.frame_id)
-        id_data.extend(struct.pack('>Q', self.destination_address))
+        id_data.extend(struct.pack(b'>Q', self.destination_address))
         id_data.append(self.options)
         id_data.extend(self.data)
         return id_data
@@ -126,7 +127,7 @@ class Tx16Request(XBeeRequest):
     def id_data(self):
         id_data = bytearray()
         id_data.append(self.frame_id)
-        id_data.extend(struct.pack('>H', self.destination_address))
+        id_data.extend(struct.pack(b'>H', self.destination_address))
         id_data.append(self.options)
         id_data.extend(self.data)
         return id_data
@@ -143,7 +144,7 @@ class AtRequest(XBeeRequest):
         self.command = command
         """Command
 
-        :type: str
+        :type: bytes
 
         """
 
@@ -177,7 +178,7 @@ class AtQueueRequest(XBeeRequest):
         self.command = command
         """Command
 
-        :type: str
+        :type: bytes
 
         """
 
@@ -234,8 +235,8 @@ class ZBTxRequest(XBeeRequest):
     def id_data(self):
         id_data = bytearray()
         id_data.append(self.frame_id)
-        id_data.extend(struct.pack('>Q', self.destination_address_64))
-        id_data.extend(struct.pack('>H', self.destination_address_16))
+        id_data.extend(struct.pack(b'>Q', self.destination_address_64))
+        id_data.extend(struct.pack(b'>H', self.destination_address_16))
         id_data.append(self.broadcast_radius)
         id_data.append(self.options)
         id_data.extend(self.data)
@@ -287,12 +288,12 @@ class ZBExplicitTxRequest(XBeeRequest):
     def id_data(self):
         id_data = bytearray()
         id_data.append(self.frame_id)
-        id_data.extend(struct.pack('>Q', self.destination_address_64))
-        id_data.extend(struct.pack('>H', self.destination_address_16))
+        id_data.extend(struct.pack(b'>Q', self.destination_address_64))
+        id_data.extend(struct.pack(b'>H', self.destination_address_16))
         id_data.append(self.source_endpoint)
         id_data.append(self.destination_endpoint)
-        id_data.extend(struct.pack('>H', self.cluster_id))
-        id_data.extend(struct.pack('>H', self.profile_id))
+        id_data.extend(struct.pack(b'>H', self.cluster_id))
+        id_data.extend(struct.pack(b'>H', self.profile_id))
         id_data.append(self.broadcast_radius)
         id_data.append(self.options)
         id_data.extend(self.data)
@@ -320,7 +321,7 @@ class RemoteAtRequest(XBeeRequest):
         self.command = command
         """Command
 
-        :type: str
+        :type: bytes
 
         """
 
@@ -337,8 +338,8 @@ class RemoteAtRequest(XBeeRequest):
     def id_data(self):
         id_data = bytearray()
         id_data.append(self.frame_id)
-        id_data.extend(struct.pack('>Q', self.destination_address_64))
-        id_data.extend(struct.pack('>H', self.destination_address_16))
+        id_data.extend(struct.pack(b'>Q', self.destination_address_64))
+        id_data.extend(struct.pack(b'>H', self.destination_address_16))
         id_data.append(self.options)
         id_data.extend(self.command)
         if self.parameter is not None:

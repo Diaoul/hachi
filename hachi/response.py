@@ -464,35 +464,30 @@ class ZBTxStatusResponse(XBeeResponse):
 class ZBRxResponse(XBeeResponse):
     """Response to a :class:`~hachi.request.ZBTxRequest`
 
-    Frame example: 7E 00 12 90 00 00 13 A2 00 40 52 2B AA 7D 84 01 52 78 44 61 74 61 0D
+    Frame example: 7E 00 12 90 00 13 A2 00 40 52 2B AA 7D 84 01 52 78 44 61 74 61 0D
 
     """
     api_id = ZB_RX_RESPONSE
 
     @property
-    def frame_id(self):
-        """Frame Id, first byte of the :attr:`~XBeeResponse.id_data`"""
-        return self.id_data[0]
-
-    @property
     def source_address_64(self):
-        """64-bits source address, on 8 bytes immediately following the :attr:`frame_id`"""
-        return unpack('>Q', self.id_data[1:9])[0]
+        """64-bits source address, first 8 bytes of the :attr:`~XBeeResponse.id_data`"""
+        return unpack('>Q', self.id_data[0:8])[0]
 
     @property
     def source_address_16(self):
         """16-bits source address, on 2 bytes immediately following the :attr:`source_address_64`"""
-        return unpack('>H', self.id_data[9:11])[0]
+        return unpack('>H', self.id_data[8:10])[0]
 
     @property
     def options(self):
         """Options, immediately following the :attr:`source_address_16`"""
-        return self.id_data[11]
+        return self.id_data[10]
 
     @property
     def data(self):
         """Data, all bytes following the :attr:`options` until the end of the :attr:`~XBeeResponse.id_data`"""
-        return self.id_data[12:]
+        return self.id_data[11:]
 
 
 class ZBExplicitRxResponse(XBeeResponse):

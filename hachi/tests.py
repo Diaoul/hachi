@@ -75,11 +75,10 @@ class ResponseTestCase(unittest.TestCase):
         self.assertTrue(packet.verify())
 
     def test_ZBRxResponse(self):
-        frame = bytearray.fromhex('7E 00 12 90 00 00 13 A2 00 40 52 2B AA 7D 84 01 52 78 44 61 74 61 0D')
+        frame = bytearray.fromhex('7E 00 12 90 00 13 A2 00 40 52 2B AA 7D 84 01 52 78 44 61 74 61 0D')
         packet = ZBRxResponse(frame)
         self.assertTrue(packet.length == 18)
         self.assertTrue(packet.api_id == 0x90)
-        self.assertTrue(packet.frame_id == 0x00)
         self.assertTrue(packet.source_address_64 == (0x00 << 8 * 7) + (0x13 << 8 * 6) + (0xa2 << 8 * 5) + (0x00 << 8 * 4) + (0x40 << 8 * 3) + (0x52 << 8 * 2) + (0x2b << 8) + 0xaa)
         self.assertTrue(packet.source_address_16 == (0x7d << 8) + 0x84)
         self.assertTrue(packet.options == 0x01)

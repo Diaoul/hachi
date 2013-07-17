@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='hachi',
-    version='0.3',
+    version='0.4',
     license=open('LICENSE').read(),
     description='XBee API',
     long_description=open('README.rst').read() + '\n\n' + open('HISTORY.rst').read(),

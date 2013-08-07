@@ -21,4 +21,6 @@ setup(name='hachi',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Topic :: Software Development :: Libraries :: Python Modules'],
-    test_suite='hachi.tests.suite')
+    tests_require=open('full-requirements.txt').readlines(),
+    test_suite='hachi.tests.suite',
+    extras_require={'Twisted': ['Twisted'], 'Serial': ['pyserial']})

@@ -1,6 +1,15 @@
 History
 =======
 
+0.5
+---
+**release date:** 2013-08-08
+
+* Add supply_voltage property to ZBIoSampleResponse
+* Add a requirements file
+* Add extras in setup
+* Improve coverage
+
 0.4
 ---
 **release date:** 2013-07-18

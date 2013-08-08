@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='hachi',
-    version='0.4',
+    version='0.5',
     license=open('LICENSE').read(),
     description='XBee API',
     long_description=open('README.rst').read() + '\n\n' + open('HISTORY.rst').read(),
@@ -13,7 +13,7 @@ setup(name='hachi',
     author='Antoine Bertin',
     author_email='diaoulael@gmail.com',
     packages=find_packages(),
-    classifiers=['Development Status :: 4 - Beta',
+    classifiers=['Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',

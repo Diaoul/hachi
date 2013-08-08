@@ -6,6 +6,7 @@ python:
   - "pypy"
 
 install:
+  - pip install -r full-requirements.txt --use-mirrors
   - pip install coveralls --use-mirrors
 
 script:

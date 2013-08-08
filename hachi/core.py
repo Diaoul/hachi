@@ -58,14 +58,14 @@ class XBee(object):
         if data == ESCAPE:  # prepare to unescape next byte
             self._escape_byte = True
             return
-        if self._escape_byte:  # unescape
+        if self._escape_byte:  # unescape data
             data = unescape(data)
             self._escape_byte = False
 
         # append data to the buffer
         self.buffer.append(data)
 
-        # check for frame completion
+        # check if frame is complete and valid and try to extract a response from it
         if len(self.buffer) > 4 and len(self.buffer) - 4 == (self.buffer[1] << 8) + self.buffer[2]:
             logger.debug('Frame complete: %s', ' '.join('%02X' % byte for byte in self.buffer))
             # verify the checksum
@@ -75,7 +75,7 @@ class XBee(object):
                 return
             # get the response
             if self.buffer[3] not in RESPONSE_MAP:
-                logger.error('Unknown Api ID %02X, discarding packet', self.buffer[3])
+                logger.error('Unknown api id %02x, discarding packet', self.buffer[3])
                 self.reset()
                 return
             self.response = RESPONSE_MAP[self.buffer[3]](self.buffer)

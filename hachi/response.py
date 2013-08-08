@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, division
 from .compat import unpack
 from .const import (RX_64_RESPONSE, RX_16_RESPONSE, RX_64_IO_RESPONSE,
     RX_16_IO_RESPONSE, AT_RESPONSE, TX_STATUS_RESPONSE, MODEM_STATUS_RESPONSE,
@@ -637,6 +637,18 @@ class ZBIoSampleResponse(XBeeResponse):
             if self.is_analog_enabled(i):
                 offset += 2
         return unpack('>H', self.id_data[15 + offset:17 + offset])[0]
+
+    @property
+    def supply_voltage(self):
+        """Gives the supply voltage in mV
+
+        :return: supply voltage in mV if available or `None`
+        :rtype: int or None
+
+        """
+        if not self.is_analog_enabled(7):
+            return None
+        return int(self.get_analog(7) * 1200 / 1024)
 
 
 class RemoteAtResponse(XBeeResponse):

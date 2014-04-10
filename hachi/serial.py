@@ -48,3 +48,7 @@ class XBeeSerial(XBee):
 
         """
         self.serial.write(escape_frame(request.frame))
+
+    def close(self):
+        """Close the serial port"""
+        self.serial.close()

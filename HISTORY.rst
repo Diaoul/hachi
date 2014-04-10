@@ -1,6 +1,12 @@
 History
 =======
 
+0.5.1
+-----
+**release date:** 2014-04-10
+
+* Add a close method to XBeeSerial
+
 0.5
 ---
 **release date:** 2013-08-08
